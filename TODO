@@ -1,0 +1,105 @@
+-Add comments on the Hardware design
+-Format into maintainable structure
+
+-Add MACRO Switch between MQTT and HTTP:
+
+    For MQTT: Ensure platformio.ini has build_flags = -DUSE_MQTT.
+
+    For HTTP: Change platformio.ini to build_flags = -DUSE_HTTP.
+
+EXAMPLE:
+
+INI FILE:
+    [env:esp8266]
+platform = espressif8266
+board = esp12e
+framework = arduino
+
+build_flags = -DUSE_MQTT
+
+lib_deps =
+    PubSubClient
+    ESP8266HTTPClient
+
+BROADCAST HANDLER FILE:
+#include <ESP8266WiFi.h>
+
+#ifdef USE_MQTT
+#include <PubSubClient.h>
+const char* mqtt_server = "broker.hivemq.com"; // Example MQTT broker
+WiFiClient espClient;
+PubSubClient client(espClient);
+#else
+#include <ESP8266HTTPClient.h>
+const char* serverName = "http://your-server.com/api/data"; // Example HTTP server
+#endif
+
+const char* ssid = "your-SSID";
+const char* password = "your-PASSWORD";
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+
+#ifdef USE_MQTT
+  client.setServer(mqtt_server, 1883);
+#endif
+}
+
+void loop() {
+#ifdef USE_MQTT
+  if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+#else
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(serverName);
+
+    http.addHeader("Content-Type", "application/json");
+    String payload = "{\"sensor\":\"BME680\",\"value\":42.5}";
+    int httpResponseCode = http.POST(payload);
+
+    if (httpResponseCode > 0) {
+      String response = http.getString();
+      Serial.println(httpResponseCode);
+      Serial.println(response);
+    } else {
+      Serial.print("Error on sending POST: ");
+      Serial.println(httpResponseCode);
+    }
+    http.end();
+  } else {
+    Serial.println("WiFi Disconnected");
+  }
+  delay(60000); // Send data every 60 seconds
+#endif
+}
+
+#ifdef USE_MQTT
+void reconnect() {
+  while (!client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    if (client.connect("ESP8266Client")) {
+      Serial.println("connected");
+      client.publish("test/topic", "Hello World");
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      delay(5000);
+    }
+  }
+}
+#endif
