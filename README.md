@@ -49,9 +49,9 @@ This is a soil monitoring device, based on the esp12e microcontroller. Using its
 ## Setup and Operation
 
 
-1. **Deployment**: Install the device in the soil. Ensure sensors are properly positioned for accurate measurements.
+1. **Deployment**: Install the device in the soil, ensuring sensors are positioned at the appropriate depth for accurate nutrient measurements. For NPK sensors, this [typically](https://www.sciencedirect.com/science/article/pii/S2214317321000342) means placing them 10 to 30 centimeters (4 to 12 inches) below the soil surface, which aligns with the root zone of most crops. Proper installation involves preparing the soil to minimize air pockets and ensuring good contact between the sensor and the surrounding soil. To avoid inaccuracies caused by surface liquid tension during rainfall, ensure that the sensors are not too close to the surface where they might be affected by water runoff. Regular calibration and maintenance of the sensors are crucial for maintaining measurement accuracy over time.
 4. **Operation**: The system continuously samples sensor data and broadcasts it online. It can be configured to save power by turning off sensors when not in use.
-5. **Analysis**: Use the broadcasted data to monitor soil health and make informed decisions about soil management.
+5. **Analysis**: Use the broadcasted data to monitor soil health and make informed decisions about soil management. Use conventional data analysis [techniques](https://www.researchgate.net/publication/378342030_Conventional_to_Modern_Methods_of_Soil_NPK_Sensing_A_Review) to assess NPK content.
 6. **Maintenance**: Periodically check and maintain the system to ensure accurate monitoring and functionality.
 
 ---
