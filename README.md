@@ -3,7 +3,7 @@
 ---
 
 ## Overview
-This is a soil monitoring device, based on the esp12e microcontroller. Using its built in WiFi functionality is able to broadcast data online. The device measures Nitrogen (N), Phosphorus (P), Potassium (K), temperature, humidity, and pH levels in the soil. It includes smart battery-saving features and supports RS485 and I2C communication protocols. The device configuration can be modified via WiFi.
+This is a soil monitoring device, based on the esp12e microcontroller. Using its built in WiFi functionality is able to broadcast data online. The device measures Nitrogen (N), Phosphorus (P), Potassium (K), temperature, humidity, and pH levels in the soil. It includes MPPT solar charging and supports both RS485 and I2C communication protocols. The device configuration can be modified via WiFi.
 
 ---
 
@@ -19,8 +19,8 @@ This is a soil monitoring device, based on the esp12e microcontroller. Using its
 
 ## Components
 - **ESP8266 Microcontroller**: Manages system operations, sensor interfacing, and data logging.
-- **Adafruit BME680**: Sensor for measuring temperature, humidity, and gas resistance.
-- **RS485 Sensors**: Used for measuring soil NPK values.
+- **Adafruit BME680**: Internal sensor for measuring air quality values. Fits into the standard strain relief connector thread. 
+- **RS485 Sensors**: Can connect up to 5 sensors to measure a variety of soil and water values.
 - **PCF8574**: I2C GPIO expander for additional GPIO control.
 
 ---
@@ -34,21 +34,22 @@ This is a soil monitoring device, based on the esp12e microcontroller. Using its
 
 ### Soil Device
 
-Here are some images of the current prototype:
 
-![Produced PCB](docs/images/esp8266_core_v1_pcb.jpg)
-*Custom PCB.*
+![Produced PCB](docs/images/esp8266_core_v2_pcb.jpg)
+*Custom PCB V2.*
+
+![Final Device](docs/images/soil_device4.jpg)
+*Soil-monitoring device V2.*
 
 ![Final Device](docs/images/soil_device1.jpg)
-*Photo of the final compost-monitoring device.*
+*Soil-monitoring device V1.*
 
 ---
 
 ## Setup and Operation
 
-1. **Hardware Setup**: Connect the BME680 and RS485 sensors to the ESP8266. Use MOSFETs for power management.
-2. **Software Configuration**: The device configuration, including WiFi credentials and sensor thresholds, can be modified via WiFi.
-3. **Deployment**: Install the device in the soil. Ensure sensors are properly positioned for accurate measurements.
+
+1. **Deployment**: Install the device in the soil. Ensure sensors are properly positioned for accurate measurements.
 4. **Operation**: The system continuously samples sensor data and broadcasts it online. It can be configured to save power by turning off sensors when not in use.
 5. **Analysis**: Use the broadcasted data to monitor soil health and make informed decisions about soil management.
 6. **Maintenance**: Periodically check and maintain the system to ensure accurate monitoring and functionality.
@@ -57,5 +58,16 @@ Here are some images of the current prototype:
 
 ## License
 This project is released under the [MIT License](LICENSE.md).
+
+---
+
+### Author
+Josep Navarro, UVERD ltd
+
+---
+
+### Acknowledgments
+- Adafruit Industries for the MPU6050 library.
+- ESP32 Arduino Core developers for the development tools and libraries.
 
 ---
